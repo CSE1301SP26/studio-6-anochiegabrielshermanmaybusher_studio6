@@ -14,7 +14,12 @@ public class RecursiveMethods {
 	public static double geometricSum(int n) {
 		
 			// FIXME compute the geometric sum for the first n terms recursively
-			return 0;
+			if (n == 0) {
+				return 0;
+			}
+			else {
+				return geometricSum(n - 1) + Math.pow(0.5, n);
+			}
 		
 	}
 
@@ -29,8 +34,19 @@ public class RecursiveMethods {
 	 * @param radiusMinimumDrawingThreshold radius above which drawing should occur
 	 */
 	public static void circlesUponCircles(double xCenter, double yCenter, double radius, double radiusMinimumDrawingThreshold) {
-		
 		// FIXME complete the recursive drawing
+		if (radius < radiusMinimumDrawingThreshold) {
+			return;
+		}
+		else {
+		StdDraw.circle(xCenter, yCenter, radius);
+		double newRadius = radius / 3.0;
+
+		circlesUponCircles(xCenter + radius, yCenter, newRadius, radiusMinimumDrawingThreshold);
+		circlesUponCircles(xCenter - radius, yCenter, newRadius, radiusMinimumDrawingThreshold);
+		circlesUponCircles(xCenter, yCenter + radius, newRadius, radiusMinimumDrawingThreshold);
+		circlesUponCircles(xCenter, yCenter - radius, newRadius, radiusMinimumDrawingThreshold);
+		}
 	}
 	
 
@@ -41,10 +57,31 @@ public class RecursiveMethods {
 	 * @return an array with the same data as the input but it reverse order
 	 */
 	public static int[] toReversed(int[] array) {
-		
-			// FIXME create a helper method that can recursively reverse the given array
-			return new int[0];
-		
+		// FIXME create a helper method that can recursively reverse the given array
+		int index = 0;
+		int[] newArray = new int[array.length];
+	 	return toReversedHelper(array, index, newArray);
+	}
+	public static int[] toReversedHelper(int[] array, int index, int[] newArray) {
+		boolean isEven = (array.length % 2 == 0);
+
+		if (index == array.length / 2 && !isEven) {
+			int midNum = array[array.length / 2];
+			newArray[array.length/2] = midNum;
+			return newArray;
+		}
+
+		else if (index == array.length / 2 && isEven) {
+			return newArray;
+		}
+
+		else {
+			int firstNum = array[index];
+			int lastNum = array[array.length - index - 1];
+			newArray[index] = lastNum;
+			newArray[array.length - index - 1] = firstNum;
+			return toReversedHelper(array, index + 1, newArray);
+		}
 	}
 
 	/**
